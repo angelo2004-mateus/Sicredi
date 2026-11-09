@@ -6,6 +6,9 @@ import { App } from "./app/App.jsx";
 import { SessionProvider } from "./hooks/use-session.jsx";
 import "./styles/global.css";
 
+document.documentElement.dataset.theme =
+  localStorage.getItem("sicredi-theme") || "light";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: { retry: false, staleTime: 30000, refetchOnWindowFocus: false },

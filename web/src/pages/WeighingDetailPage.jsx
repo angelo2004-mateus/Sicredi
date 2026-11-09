@@ -1,3 +1,4 @@
+import { StatusBadge } from "../components/DataDisplay.jsx";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../services/api.js";
@@ -5,7 +6,7 @@ import { useSession } from "../hooks/use-session.jsx";
 import { PermissionGate } from "../layouts/AppLayout.jsx";
 import { PageHeader } from "../components/PageHeader.jsx";
 import { Loading, ErrorMessage } from "../components/Feedback.jsx";
-import { formatDate, formatWeight, statusLabels } from "../utils/format.js";
+import { formatDate, formatWeight } from "../utils/format.js";
 
 export function WeighingDetailPage() {
   const { user } = useSession();
@@ -44,7 +45,9 @@ function WeighingDetail() {
   return (
     <>
       <PageHeader title="Detalhe da pesagem">
-        <Link to="/pesagens">Voltar ao histórico</Link>
+        <Link className="button secondary" to="/pesagens">
+          Voltar ao histórico
+        </Link>
       </PageHeader>
       {query.isPending && <Loading />}
       <ErrorMessage error={query.error} onRetry={query.refetch} />
@@ -56,7 +59,9 @@ function WeighingDetail() {
             <dt>Data e hora</dt>
             <dd>{formatDate(query.data.weighed_at)}</dd>
             <dt>Status</dt>
-            <dd>{statusLabels[query.data.status]}</dd>
+            <dd>
+              <StatusBadge status={query.data.status} />
+            </dd>
             <dt>Agência</dt>
             <dd>
               {agency.data?.name ||

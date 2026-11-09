@@ -1,6 +1,6 @@
 # Spec da arquitetura geral do MVP Lixo Zero Sicredi
 
-Data: 07/11/2026. Esta é a spec de referência. O usuário autorizou posteriormente implementar somente o backend; o estado efetivo da implementação e as políticas ainda pendentes estão em `STATUS_BACKEND.md`. O esqueleto do frontend foi autorizado posteriormente e está descrito em `STATUS_FRONTEND.md`; o design definitivo aguarda referência visual.
+Data: 07/11/2026. Esta é a spec de referência. O usuário autorizou posteriormente implementar somente o backend; o estado efetivo da implementação e as políticas ainda pendentes estão em `STATUS_BACKEND.md`. O esqueleto do frontend foi autorizado posteriormente e está descrito em `STATUS_FRONTEND.md`; a referência visual foi fornecida posteriormente e sua aplicação está documentada em `REFERENCIA_VISUAL.md`.
 
 ## 1. Base e alcance
 

@@ -1,6 +1,6 @@
 # Esqueleto do frontend
 
-O usuário autorizou iniciar o frontend em React JS, mantendo o design simples até o envio de uma referência visual. A implementação está em `web`, com Vite, React Router e TanStack Query. O padrão de espaçamento solicitado para revisão humana também se aplica ao frontend.
+O usuário autorizou iniciar o frontend em React JS e depois forneceu a referência visual. A entrega inicial e a evolução estão registradas abaixo; o estado visual atual está em `REFERENCIA_VISUAL.md`. A implementação está em `web`, com Vite, React Router e TanStack Query. O padrão de espaçamento solicitado para revisão humana também se aplica ao frontend.
 
 ## Entrega inicial
 
@@ -43,3 +43,12 @@ O formulário de usuário exige agência para perfis internos e parceiro para pe
 No formulário do parceiro, Super Admin mantém múltiplas agências e tipos. A API grava os vínculos junto com o cadastro em uma transação e audita o resultado. Vínculos removidos de agência são inativados, preservando histórico. A seleção de parceiros da pesagem usa `/lookups/partners`, restrito a ID/nome/status dos parceiros ativos permitidos, sem documentos ou contatos.
 
 Validação adicional: 48 testes integrados de backend aprovados; navegador validado com dados fictícios em banco separado para criar agência, criar/editar parceiro, recuperar vínculos, selecionar as cinco roles como Super Admin e restringir as opções do Admin da Agência e do Admin do Parceiro. O Colaborador Interno não vê o menu de parceiros, mas continua selecionando parceiros autorizados na pesagem. A instalação principal não recebeu dados desses testes.
+
+
+## Aplicação da referência visual
+
+A referência visual foi fornecida posteriormente e inspecionada com acesso autorizado. O frontend agora usa as cores, tipografia, imagens e medidas observadas na referência: login em duas colunas, menu verde recolhível, cabeçalho compacto, resumo dos cadastros, filtros, badges, tabelas, cards de tipos, modais de cadastro em etapas, perfil, tema escuro e menu móvel. O dashboard apresenta gráficos com agregados reais da API e filtros por período/resíduo. A busca e os filtros dos cadastros operam sobre as páginas obtidas da API, sempre no escopo autorizado.
+
+`REFERENCIA_VISUAL.md` registra os valores e limites da reprodução. Textos e indicadores foram adaptados ao MVP de pesagens; funcionalidades de bombonas, QR Code e transporte da referência não foram adicionadas. As autorizações e políticas pendentes do backend continuam valendo.
+
+Build, formatação e navegação foram validados, incluindo cadastro de agência, edição de usuário sem alterar role/senha e pesagem fictícia de 8,750 kg em banco isolado, dashboard, tema e comportamento móvel.

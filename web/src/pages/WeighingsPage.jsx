@@ -1,3 +1,5 @@
+import { Icon } from "../components/Icon.jsx";
+import { Pagination, StatusBadge } from "../components/DataDisplay.jsx";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -6,7 +8,7 @@ import { api, ApiError, queryString } from "../services/api.js";
 import { PermissionGate } from "../layouts/AppLayout.jsx";
 import { PageHeader } from "../components/PageHeader.jsx";
 import { Loading, ErrorMessage, EmptyState } from "../components/Feedback.jsx";
-import { formatDate, formatWeight, statusLabels } from "../utils/format.js";
+import { formatDate, formatWeight } from "../utils/format.js";
 
 function dateFilters(start, end) {
   const result = {};
@@ -43,7 +45,7 @@ function WeighingsList({ report }) {
   const query = useQuery({
     queryKey: [report ? "reports" : "weighings", filters, page],
     queryFn: () =>
-      api(`${endpoint}${queryString({ ...filters, page, page_size: 20 })}`),
+      api(`${endpoint}${queryString({ ...filters, page, page_size: 10 })}`),
   });
 
   function applyFilters(event) {
@@ -104,7 +106,10 @@ function WeighingsList({ report }) {
           </button>
         ) : (
           user.permissions.create_weighing && (
-            <Link to="/pesagens/nova">Registrar pesagem</Link>
+            <Link className="button" to="/pesagens/nova">
+              <Icon name="plus" />
+              Registrar pesagem
+            </Link>
           )
         )}
       </PageHeader>
@@ -136,7 +141,7 @@ function WeighingsList({ report }) {
       />
       {query.isPending && <Loading />}
       {query.data && (
-        <section className="panel">
+        <section className="panel table-panel">
           {query.data.totals && (
             <p>
               <strong>
@@ -164,9 +169,16 @@ function WeighingsList({ report }) {
                     <tr key={row.id}>
                       <td>{formatDate(row.weighed_at)}</td>
                       <td>{formatWeight(row.weight_kg)}</td>
-                      <td>{statusLabels[row.status]}</td>
                       <td>
-                        <Link to={`/pesagens/${row.id}`}>Ver pesagem</Link>
+                        <StatusBadge status={row.status} />
+                      </td>
+                      <td>
+                        <Link
+                          className="button secondary"
+                          to={`/pesagens/${row.id}`}
+                        >
+                          Abrir
+                        </Link>
                       </td>
                     </tr>
                   ))}
@@ -174,24 +186,13 @@ function WeighingsList({ report }) {
               </table>
             </div>
           )}
-          <div className="pagination">
-            <button
-              type="button"
-              disabled={page === 1}
-              onClick={() => setPage(page - 1)}
-            >
-              Anterior
-            </button>
-            <span>
-              Página {page} · {query.data.pagination.total} registros
-            </span>
-            <button
-              type="button"
-              disabled={page * 20 >= query.data.pagination.total}
-              onClick={() => setPage(page + 1)}
-            >
-              Próxima
-            </button>
+          <div style={{ padding: "0 16px 16px" }}>
+            <Pagination
+              page={page}
+              pageSize={10}
+              total={query.data.pagination.total}
+              onPageChange={setPage}
+            />
           </div>
         </section>
       )}

@@ -1,6 +1,6 @@
 # Lixo Zero Sicredi
 
-Backend do MVP do Programa Lixo Zero da Sicredi Ouro Verde MT/PA. Node.js com TypeScript, Express, Prisma e PostgreSQL, com organização em rotas, controllers, services, repositories, validações e policies. O frontend inicial em React JS está em `web`, com layout simples que será adaptado à referência visual do usuário.
+Backend do MVP do Programa Lixo Zero da Sicredi Ouro Verde MT/PA. Node.js com TypeScript, Express, Prisma e PostgreSQL, com organização em rotas, controllers, services, repositories, validações e policies. O frontend inicial em React JS está em `web`, com identidade visual aplicada a partir da referência fornecida pelo usuário.
 
 ## Executar com Docker
 
@@ -137,7 +137,7 @@ Telas iniciais: login, visão geral com dados reais, formulário de pesagem, his
 
 O frontend permite consultar, buscar, paginar, cadastrar e editar agências, usuários, parceiros, tipos de parceiros e resíduos conforme as permissões da sessão. Usuários têm seleção de role e vínculo com agência/parceiro; parceiros permitem vínculos com agências e classificação por tipos. Troca da própria senha pela tela de perfil, edição/cancelamento de pesagens e auditoria visual ficam para os próximos incrementos. Não há dados fictícios ou autenticação simulada no frontend. Use o seed do backend com senha definida por você para entrar na instalação local.
 
-O CSS é simples e responsivo, com variáveis básicas e sem biblioteca visual, fontes externas ou imagens. O design definitivo será aplicado após o envio da referência. Para verificar o código: `npm run build` e `npm run format:check`, dentro de `web`.
+O CSS é simples e responsivo, com variáveis básicas e sem biblioteca visual, fontes externas ou imagens. A referência foi fornecida posteriormente; sua aplicação está documentada em `docs/REFERENCIA_VISUAL.md`. Para verificar o código: `npm run build` e `npm run format:check`, dentro de `web`.
 
 
 ### Roles e ações dos cadastros
@@ -147,3 +147,8 @@ As cinco roles são `super_admin`, `agency_admin`, `internal_employee`, `partner
 Super Admin cadastra agências e atribui as cinco roles dentro da sua organização. Admin Agência gerencia colaboradores internos da sua unidade e cadastra parceiros com vínculo automático. Admin Parceiro gerencia colaboradores do seu parceiro. Colaboradores não possuem ações administrativas. A edição do cadastro compartilhado de parceiros e a delegação de novos administradores permanecem centrais.
 
 `POST/PATCH /partners` aceita `agency_ids` e `partner_type_ids` para Super Admin. Os arrays são validados e persistidos na mesma transação do parceiro. Para a seleção de destinação na pesagem, `GET /lookups/partners` fornece apenas ID, nome e status de parceiros ativos, sempre no escopo do usuário; o Colaborador Interno não acessa o cadastro completo de parceiros.
+
+
+## Referência visual aplicada
+
+O frontend usa a referência visual fornecida pelo usuário, com menu lateral verde, tema claro/escuro, login com imagem, cards, filtros, tabelas, cadastro em modal com etapas e dashboard com gráficos reais. A navegação respeita os perfis e permanece adaptada ao MVP de pesagens. A origem dos recursos, medidas observadas e limites da reprodução estão em `docs/REFERENCIA_VISUAL.md`.

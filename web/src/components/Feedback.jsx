@@ -1,3 +1,5 @@
+import { Icon } from "./Icon.jsx";
+
 export function Loading({ message = "Carregando…" }) {
   return (
     <p role="status" className="feedback">
@@ -31,5 +33,10 @@ export function ErrorMessage({ error, onRetry }) {
 }
 
 export function EmptyState({ children = "Nenhum registro encontrado." }) {
-  return <p className="feedback">{children}</p>;
+  return (
+    <div className="empty-state">
+      <Icon name="clipboard" size={32} />
+      <p>{children}</p>
+    </div>
+  );
 }

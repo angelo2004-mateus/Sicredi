@@ -1,3 +1,5 @@
+import { ThemeToggle } from "../components/ThemeToggle.jsx";
+import { Icon } from "../components/Icon.jsx";
 import { canAccessPage } from "../services/access.js";
 import { useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
@@ -40,40 +42,56 @@ export function LoginPage() {
 
   return (
     <main className="login-page">
-      <section className="panel login-panel">
-        <p className="muted">Programa Lixo Zero · Sicredi</p>
-        <h1>Acessar o sistema</h1>
-        <p>Entre com os dados fornecidos pela administração.</p>
-        <ErrorMessage error={sessionError} onRetry={retry} />
-        <ErrorMessage error={error} />
-        <form onSubmit={handleSubmit} className="form-stack">
-          <label>
-            E-mail
-            <input
-              name="email"
-              type="email"
-              autoComplete="username"
-              required
-              maxLength={254}
-            />
-          </label>
-          <label>
-            Senha
-            <input
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              maxLength={128}
-            />
-          </label>
-          <button disabled={pending} type="submit">
-            {pending ? "Entrando…" : "Entrar"}
-          </button>
-        </form>
-        <p className="muted">
-          Para recuperar seu acesso, procure o administrador.
-        </p>
+      <section className="login-hero">
+        <div className="login-hero-content">
+          <div className="login-logo">
+            <img src="/images/sicredi-logo.png" alt="Sicredi" />
+          </div>
+          <h1>
+            Do resíduo ao impacto: inovação para conectar pessoas, dados e
+            sustentabilidade.
+          </h1>
+          <p>
+            Cadastre agências, usuários e parceiros, registre o peso de cada
+            saco de resíduo e acompanhe indicadores, relatórios e a
+            rastreabilidade dos lançamentos — do descarte à destinação final.
+          </p>
+        </div>
+      </section>
+      <section className="login-access">
+        <ThemeToggle />
+        <div className="login-panel">
+          <h2>Entrar</h2>
+          <p className="muted">Use seu e-mail corporativo.</p>
+          <ErrorMessage error={sessionError} onRetry={retry} />
+          <ErrorMessage error={error} />
+          <form onSubmit={handleSubmit} className="form-stack">
+            <label>
+              E-mail
+              <input
+                name="email"
+                type="email"
+                autoComplete="username"
+                placeholder="voce@sicredi.demo"
+                required
+                maxLength={254}
+              />
+            </label>
+            <label>
+              Senha
+              <input
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                maxLength={128}
+              />
+            </label>
+            <button disabled={pending} type="submit">
+              <Icon name="login" /> {pending ? "Entrando…" : "Entrar"}
+            </button>
+          </form>
+        </div>
       </section>
     </main>
   );
