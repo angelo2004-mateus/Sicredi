@@ -1,0 +1,222 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  super_admin
+  agency_admin
+  internal_employee
+  partner_admin
+  partner_employee
+}
+
+enum RecordStatus {
+  active
+  inactive
+}
+
+enum WeighingStatus {
+  active
+  corrected
+  cancelled
+}
+
+model Organization {
+  id String @id @default(uuid()) @db.Uuid
+
+  name     String
+  document String? @unique
+
+  status RecordStatus @default(active)
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt @db.Timestamptz(3)
+
+  @@map("organizations")
+}
+
+model Agency {
+  id              String @id @default(uuid()) @db.Uuid
+  organization_id String @db.Uuid
+  code            String
+
+  name                  String
+  cnpj                  String?
+  address               String?
+  city                  String?
+  state                 String?
+  region                String?
+  technical_responsible String?
+
+  status RecordStatus @default(active)
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt @db.Timestamptz(3)
+
+  @@unique([organization_id, id])
+  @@unique([organization_id, code])
+  @@unique([organization_id, cnpj])
+  @@map("agencies")
+}
+
+model PartnerType {
+  id              String @id @default(uuid()) @db.Uuid
+  organization_id String @db.Uuid
+
+  name        String
+  description String?
+
+  status RecordStatus @default(active)
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt @db.Timestamptz(3)
+
+  @@unique([organization_id, id])
+  @@unique([organization_id, name])
+  @@map("partner_types")
+}
+
+model Partner {
+  id              String @id @default(uuid()) @db.Uuid
+  organization_id String @db.Uuid
+
+  name       String
+  trade_name String?
+  cnpj       String?
+  phone      String?
+  email      String?
+  address    String?
+  city       String?
+  state      String?
+
+  status RecordStatus @default(active)
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt @db.Timestamptz(3)
+
+  @@unique([organization_id, id])
+  @@unique([organization_id, cnpj])
+  @@map("partners")
+}
+
+model PartnerTypeLink {
+  organization_id String @db.Uuid
+  partner_id      String @db.Uuid
+  partner_type_id String @db.Uuid
+
+  @@id([partner_id, partner_type_id])
+  @@map("partner_type_links")
+}
+
+model AgencyPartnerLink {
+  organization_id String @db.Uuid
+  agency_id       String @db.Uuid
+  partner_id      String @db.Uuid
+
+  status RecordStatus @default(active)
+
+  @@id([agency_id, partner_id])
+  @@map("agency_partner_links")
+}
+
+model User {
+  id              String  @id @default(uuid()) @db.Uuid
+  organization_id String  @db.Uuid
+  agency_id       String? @db.Uuid
+  partner_id      String? @db.Uuid
+
+  name          String
+  cpf           String?
+  email         String  @unique
+  password_hash String
+  role          Role
+
+  status RecordStatus @default(active)
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt @db.Timestamptz(3)
+
+  @@unique([organization_id, id])
+  @@unique([organization_id, cpf])
+  @@index([organization_id, agency_id])
+  @@index([organization_id, partner_id])
+  @@map("users")
+}
+
+model ResidueType {
+  id              String @id @default(uuid()) @db.Uuid
+  organization_id String @db.Uuid
+
+  name                String
+  description         String?
+  color               String?
+  default_destination String?
+
+  status RecordStatus @default(active)
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt @db.Timestamptz(3)
+
+  @@unique([organization_id, id])
+  @@unique([organization_id, name])
+  @@map("residue_types")
+}
+
+model WasteBagWeighing {
+  id                     String   @id @default(uuid()) @db.Uuid
+  organization_id        String   @db.Uuid
+  agency_id              String   @db.Uuid
+  residue_type_id        String   @db.Uuid
+  registered_by          String   @db.Uuid
+  destination_partner_id String?  @db.Uuid
+  weight_kg              Decimal  @db.Decimal(10, 3)
+  weighed_at             DateTime @default(now()) @db.Timestamptz(3)
+  notes                  String?
+  evidence_url           String?
+
+  status  WeighingStatus @default(active)
+  version Int            @default(1)
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt @db.Timestamptz(3)
+
+  @@unique([organization_id, id])
+  @@index([organization_id, agency_id, weighed_at])
+  @@index([organization_id, destination_partner_id, weighed_at])
+  @@index([organization_id, residue_type_id, status])
+  @@map("waste_bag_weighings")
+}
+
+model AuditLog {
+  id              String  @id @default(uuid()) @db.Uuid
+  organization_id String  @db.Uuid
+  user_id         String  @db.Uuid
+  action          String
+  entity_type     String
+  entity_id       String  @db.Uuid
+  before_data     Json?
+  after_data      Json?
+  ip_address      String?
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([organization_id, entity_type, entity_id, created_at])
+  @@map("audit_logs")
+}
+
+model Session {
+  id         String   @id @default(uuid()) @db.Uuid
+  user_id    String   @db.Uuid
+  token_hash String   @unique
+  csrf_hash  String
+  expires_at DateTime @db.Timestamptz(3)
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([expires_at])
+  @@map("sessions")
+}

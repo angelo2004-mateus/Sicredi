@@ -1,0 +1,27 @@
+{
+  "name": "lixo-zero-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "format": "prettier --write src *.js *.html",
+    "format:check": "prettier --check src *.js *.html"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "5.107.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-router-dom": "7.18.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "6.2.1",
+    "prettier": "3.9.10",
+    "vite": "8.3.6"
+  }
+}
